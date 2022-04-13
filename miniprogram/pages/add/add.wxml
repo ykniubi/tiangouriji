@@ -1,0 +1,8 @@
+<view class="container">
+  <form  bindsubmit="addData">
+    <textarea name="diary_content" placeholder="请输入今日舔狗日记。。。" cols="30" rows="10" value="{{form_info}}"></textarea>
+    <button class="btn1" form-type="submit">点我添加日记</button>
+  </form>
+
+
+</view>

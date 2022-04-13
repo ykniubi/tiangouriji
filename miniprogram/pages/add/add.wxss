@@ -1,0 +1,20 @@
+.btn1{
+  background-color: aqua;
+  width: 50rpx;
+  border: rgb(255, 54, 255) 2rpx solid;
+  box-shadow: 15rpx 15rpx 50rpx rgba(3, 104, 96, 0.397);
+} 
+
+
+.list_item{
+  margin-bottom: 20rpx;
+  padding: 5rpx 10rpx;
+  border: 2rpx solid rgb(98, 217, 233);
+  border-radius: 10rpx;
+}
+
+textarea{
+  margin: 50rpx auto;
+  border: 4rpx dotted rgb(255, 54, 255);
+  padding: 20rpx;
+}

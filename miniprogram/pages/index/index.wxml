@@ -1,0 +1,16 @@
+<view class="container">
+
+  <scroll-view class="scroll_list" scroll-y enable-flex>
+    <view class="list_item" wx:for="{{diary}}" wx:key="_id">
+      <text>{{item.date}}</text>
+      <text>{{item.diary_item}}</text>
+      <view class="btnContainer">
+        <button size="mini" bindtap="uptateData" id="{{item._id}}">更新</button>
+        <button size="mini" bindtap="deleteData">删除</button>
+      </view>
+    </view>
+
+  </scroll-view>
+
+  <button class="btn1" bindtap="getData">点我获取日记</button>
+</view>

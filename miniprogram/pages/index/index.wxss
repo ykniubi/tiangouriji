@@ -1,0 +1,42 @@
+.btn1{
+  background-color: aqua;
+  width: 50rpx;
+  border: rgb(255, 54, 255) 2rpx solid;
+  margin-top: 100rpx;
+  box-shadow: 15rpx 15rpx 50rpx rgba(3, 104, 96, 0.397);
+} 
+.scroll_list{
+  margin: 50rpx auto;
+  padding: 20rpx;
+  height: 700rpx;
+  width: 650rpx;
+  border: 4rpx dotted rgb(255, 54, 255);
+}
+.list_item{
+  margin-bottom: 20rpx;
+  padding: 5rpx 10rpx;
+  border: 2rpx solid rgb(98, 217, 233);
+  border-radius: 10rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.list_item text:nth-child(1){
+  font-size: 25rpx;
+  color: skyblue;
+}
+
+
+.btnContainer{
+  margin-top: 20rpx;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.btnContainer button{
+  padding: 0;
+  margin: 0;
+  font-weight: 500;
+  color: rgb(255, 54, 255);
+  background-color: skyblue;
+}
