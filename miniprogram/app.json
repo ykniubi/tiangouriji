@@ -11,6 +11,8 @@
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
+    "color": "#dbdbdb",
+    "selectedColor": "#74ebd5",
     "list": [{
       "pagePath": "pages/index/index",
       "text": "获取",

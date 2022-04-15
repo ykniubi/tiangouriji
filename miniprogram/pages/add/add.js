@@ -1,5 +1,3 @@
-// pages/add/add.js
-const db = wx.cloud.database()
 
 Date.prototype.Format = function (fmt) {
   var o = {
@@ -39,7 +37,8 @@ Page({
 
     var date = new Date().Format("yyyy-MM-dd hh:mm:ss");
     if(diary_item.trim()){
-      db.collection("demolist").add({
+      wx.cloud.callFunction({
+        name:'addData',
         data:{
           diary_item,
           date

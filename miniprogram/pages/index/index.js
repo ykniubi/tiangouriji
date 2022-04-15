@@ -1,11 +1,11 @@
-const db = wx.cloud.database()
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    diary: []
+    diary: [],
+    isTrigger: true,
   },
   // 获取数据
 
@@ -13,62 +13,118 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this.getData()
+
 
   },
-  getData() {
-    db.collection("demolist").get().then(res => {
+  // scrollview下拉刷新
+  refresh(){
+    this.setData({
+      diary: []
+    })
+    this.getData(6, 0)
+    setTimeout(()=>{
+      this.setData({isTrigger:false})
+    },1000)
+  },
+  // scrollview触底
+  reachBottom(){
+    let skip = this.data.diary.length
+    this.getData(6, skip)
+  },
+
+
+  // 传入获取数据个数以及跳过几个数据
+  getData(num = 6, skip = 0) {
+    wx.cloud.callFunction({
+      name: "getData",
+      data: {
+        num,
+        skip
+      }
+    }).then((res) => {
+      let diary = this.data.diary.concat(res.result.data)
       this.setData({
-        diary: res.data.reverse()
+        diary,
       })
     })
   },
+
   uptateData(e) {
-    // 传递this
     let that = this
     let id = e.currentTarget.id
     wx.showModal({
+      editable: true,
       title: '请输入更新内容',
-      editable: 'true',
       placeholderText: '换种姿势舔',
-    }).then(res=>{
+      success(res) {
         if (res.confirm) {
           // 更新数据库数据
-          db.collection('demolist').doc(id).update({
+          let content = res.content
+          wx.cloud.callFunction({
+            name: 'updateData',
             data: {
-              diary_item: res.content
+              id,
+              content
             }
           })
+
           // 更新data中数据，让页面数更新
-          that.updatePage(id, res.content)
+          that.updatePage(id, false, res.content)
 
           wx.showToast({
             title: '更新成功！',
             icon: 'success'
           })
+        }
       }
     })
   },
 
-  // 更新页面
-  updatePage(id, content) {
-    let diary = this.data.diary.map(item => {
-      if (item._id == id) {
-        return {
-          date: item.date,
-          diary_item: content
+  // 更新页面(更新数据后的)
+  updatePage(id, isdel, content) {
+    let diary = this.data.diary
+
+    if (isdel) {
+      diary = diary.filter(item => {
+        return item._id != id
+      })
+    } else {
+      diary = diary.map(item => {
+        if (item._id == id) {
+          return {
+            _id: item._id,
+            date: item.date,
+            diary_item: content
+          }
+        } else {
+          return item
         }
-      } else {
-        return item
-      }
-    })
+      })
+    }
     this.setData({
       diary
     })
   },
+
+  // 删除数据
   deleteData(e) {
     let id = e.currentTarget.id
-    db.collection('demolist').doc(id).remove().then(res=>console.log(res))
+    // 调用云函数删除
+    wx.cloud.callFunction({
+      name: 'deleteData',
+      data: {
+        id
+      }
+    })
+    wx.showToast({
+      title: '删除成功',
+      icon: 'success'
+    })
+    this.updatePage(id, true)
   },
+
+
 
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -102,14 +158,21 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    // this.setData({
+    //   diary: []
+    // })
+    // this.getData(6, 0)
+    // setTimeout(() => {
+    //   wx.stopPullDownRefresh()
+    // }, 1000)
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    // let skip = this.data.diary.length
+    // this.getData(6, skip)
   },
 
   /**
